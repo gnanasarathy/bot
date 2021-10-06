@@ -16,7 +16,7 @@ for i in db_lis:
 
 
 cl_1 = datetime.time(hour=8, minute=58, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
-cl_2 = datetime.time(hour=14, minute=5, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
+cl_2 = datetime.time(hour=14, minute=7, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 cl_3 = datetime.time(hour=13, minute=58, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 
 
