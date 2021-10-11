@@ -30,7 +30,7 @@ staff_list = [['jan', 'ui', 'met', 'pd', 'ang', 'jan', 'pd', 'met', 'ang', 'ui']
               ['jan', 'ui', 'moh', 'ac', 'ang', 'jan', 'ac', 'moh', 'ang', 'ui']]
 
 
-cl_1 = datetime.time(hour=9, minute=14, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
+cl_1 = datetime.time(hour=9, minute=20, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 cl_2 = datetime.time(hour=10, minute=58, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 cl_3 = datetime.time(hour=13, minute=58, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 
