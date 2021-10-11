@@ -10,6 +10,23 @@ dispatcher = updater.dispatcher
 
 db = sqlite3.connect("database.db")
 cursor = db.cursor()
+r = list(cursor.execute("SELECT * FROM schedule"))
+links_dict = {}
+st = "Link for the Class\n"
+for i in r:
+    links_dict[i[0]] = st + i[1]
+
+users = ['1090783297', '967948229', '1079579102', '1054397493', '983782432']
+subject = ['ds1', 'el1', 'lab', 'cs1', 'ci1', 'pcv1', 'ds2', 'ci2', 'cs2', 'pcv2', 'el2']
+staff_list = [['jan', 'ui', 'a', 'met', 'pd', 'ang', 'jan', 'pd', 'met', 'ang', 'ui'],
+              ['abi', 'ui', 'a', 'met', 'pd', 'ang', 'abi', 'pd', 'met', 'ang', 'ui'],
+              ['abi', 'ui', 'a', 'met', 'pd', 'ang', 'abi', 'pd', 'met', 'ang', 'ui'],
+              ['abi', 'nlp', 'b', 'met', 'pd', 'ang', 'abi', 'pd', 'met', 'ang', 'nlp'],
+              ['jan', 'ui', 'a', 'moh', 'ac', 'ang', 'jan', 'ac', 'moh', 'ang', 'ui']]
+
+user_dict = {}
+for i in range(len(users)):
+    user_dict[users[i]] = [subject[j] + '_' + staff_list[i][j] for j in range(len(subject))]
 
 
 def start(update, context):
@@ -20,171 +37,379 @@ start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
 
-subject = ['ds1', 'el1', 'cs1', 'ci1', 'pcv1', 'ds2', 'ci2', 'cs2', 'pcv2', 'el2']
-users = ['1090783297', '967948229', '1079579102', '1054397493', '983782432']
-section = ['a', 'a', 'a', 'b', 'a']
-staff_list = [['jan', 'ui', 'met', 'pd', 'ang', 'jan', 'pd', 'met', 'ang', 'ui'],
-              ['abi', 'ui', 'met', 'pd', 'ang', 'abi', 'pd', 'met', 'ang', 'ui'],
-              ['abi', 'ui', 'met', 'pd', 'ang', 'abi', 'pd', 'met', 'ang', 'ui'],
-              ['abi', 'nlp', 'met', 'pd', 'ang', 'abi', 'pd', 'met', 'ang', 'nlp'],
-              ['jan', 'ui', 'moh', 'ac', 'ang', 'jan', 'ac', 'moh', 'ang', 'ui']]
 
 
-cl_1 = datetime.time(hour=9, minute=25, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
+
+
+cl_1 = datetime.time(hour=8, minute=58, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 cl_2 = datetime.time(hour=10, minute=58, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 cl_3 = datetime.time(hour=13, minute=58, second=00,tzinfo=pytz.timezone('Asia/Kolkata'))
 
 cl = [cl_1, cl_2, cl_3]
 
 
-f = 1
-query = [subject[q] + '_' + staff_list[0][q] for q in range(len(subject))]
-ind = 0
-for t in range(5):
-    link1 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind])))
-    link2 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind+1])))
-    s = "Link for the Class\n"
-    class_t = [s+link1[0][0], s+link2[0][0]]
-    day = (t, t)
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[0], text=class_t[0])
-    job_daily = job.run_daily(func, days=day, time=cl[0])
-
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[0], text=class_t[1])
-    job_daily = job.run_daily(func, days=day, time=cl[1])
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][0]])
 
 
-    if f:
-        lab_q = "lab_" + section[0]
-        lab = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(lab_q)))
-        lab_link = lab[0][0]
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[0], text=lab_link)
-        job_daily = job.run_daily(func, days=day, time=cl[2])
-        f = 0
-    ind += 2
+job_daily = job.run_daily(func, days=(0,0), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][1]])
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_2)
 
 
-####
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][2]])
 
-f = 1
-query = [subject[q] + '_' + staff_list[1][q] for q in range(len(subject))]
-ind = 0
-for t in range(5):
-    link1 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind])))
-    link2 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind+1])))
-    s = "Link for the Class\n"
-    class_t = [s+link1[0][0], s+link2[0][0]]
-    day = (t, t)
 
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[1], text=class_t[0])
-    job_daily = job.run_daily(func, days=day, time=cl[0])
+job_daily = job.run_daily(func, days=(0,0), time=cl_3)
 
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[1], text=class_t[1])
-    job_daily = job.run_daily(func, days=day, time=cl[1])
 
-    if f:
-        lab_q = "lab_" + section[1]
-        lab = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(lab_q)))
-        lab_link = lab[0][0]
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[1], text=lab_link)
-        job_daily = job.run_daily(func, days=day, time=cl[2])
-        f = 0
-    ind += 2
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][3]])
 
-###
 
-f = 1
-query = [subject[q] + '_' + staff_list[2][q] for q in range(len(subject))]
-ind = 0
-for t in range(5):
-    link1 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind])))
-    link2 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind+1])))
-    s = "Link for the Class\n"
-    class_t = [s+link1[0][0], s+link2[0][0]]
-    day = (t, t)
-    for x in range(2):
-    
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[2], text=class_t[0])
-    job_daily = job.run_daily(func, days=day, time=cl[0])
+job_daily = job.run_daily(func, days=(1,1), time=cl_1)
 
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[2], text=class_t[1])
-    job_daily = job.run_daily(func, days=day, time=cl[1])
 
-    if f:
-        lab_q = "lab_" + section[2]
-        lab = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(lab_q)))
-        lab_link = lab[0][0]
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[2], text=lab_link)
-        job_daily = job.run_daily(func, days=day, time=cl[2])
-        f = 0
-    ind += 2
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][4]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][5]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][6]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][7]])
+
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][8]])
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_2)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][9]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1090783297', text=links_dict[user_dict[users[0]][10]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_2)
+
+
+
 
 ###
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][0]])
 
-f = 1
-query = [subject[q] + '_' + staff_list[3][q] for q in range(len(subject))]
-ind = 0
-for t in range(5):
-    link1 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind])))
-    link2 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind+1])))
-    s = "Link for the Class\n"
-    class_t = [s+link1[0][0], s+link2[0][0]]
-    day = (t, t)
-    
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[3], text=class_t[0])
-    job_daily = job.run_daily(func, days=day, time=cl[0])
 
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[3], text=class_t[1])
-    job_daily = job.run_daily(func, days=day, time=cl[1])
+job_daily = job.run_daily(func, days=(0,0), time=cl_1)
 
-    if f:
-        lab_q = "lab_" + section[3]
-        lab = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(lab_q)))
-        lab_link = lab[0][0]
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[3], text=lab_link)
-        job_daily = job.run_daily(func, days=day, time=cl[2])
-        f = 0
-    ind += 2
-###
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][1]])
 
-f = 1
-query = [subject[q] + '_' + staff_list[4][q] for q in range(len(subject))]
-ind = 0
-for t in range(5):
-    link1 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind])))
-    link2 = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(query[ind+1])))
-    s = "Link for the Class\n"
-    class_t = [s+link1[0][0], s+link2[0][0]]
-    day = (t, t)
-    
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[4], text=class_t[0])
-    job_daily = job.run_daily(func, days=day, time=cl[0])
+job_daily = job.run_daily(func, days=(0,0), time=cl_2)
 
-    def func(context: telegram.ext.CallbackContext):
-        context.bot.send_message(chat_id=users[4], text=class_t[1])
-    job_daily = job.run_daily(func, days=day, time=cl[1])
 
-    if f:
-        lab_q = "lab_" + section[4]
-        lab = list(cursor.execute("SELECT link from schedule WHERE class = '{}'".format(lab_q)))
-        lab_link = lab[0][0]
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[4], text=lab_link)
-        job_daily = job.run_daily(func, days=day, time=cl[2])
-        f = 0
-    ind += 2
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][2]])
+
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_3)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][3]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][4]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][5]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][6]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][7]])
+
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][8]])
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_2)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][9]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='967948229', text=links_dict[user_dict[users[1]][10]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_2)
+
+
+
+# ######
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][0]])
+
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][1]])
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][2]])
+
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_3)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][3]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][4]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][5]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][6]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][7]])
+
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][8]])
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_2)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][9]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1079579102', text=links_dict[user_dict[users[2]][10]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_2)
+
+
+
+
+#####
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][0]])
+
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][1]])
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][2]])
+
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_3)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][3]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][4]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][5]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][6]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][7]])
+
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][8]])
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_2)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][9]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='1054397493', text=links_dict[user_dict[users[3]][10]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_2)
+
+
+
+# #####
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][0]])
+
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][1]])
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][2]])
+
+
+job_daily = job.run_daily(func, days=(0,0), time=cl_3)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][3]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][4]])
+
+
+job_daily = job.run_daily(func, days=(1,1), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][5]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][6]])
+
+
+job_daily = job.run_daily(func, days=(2,2), time=cl_2)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][7]])
+
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_1)
+
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][8]])
+
+job_daily = job.run_daily(func, days=(3,3), time=cl_2)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][9]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_1)
+
+def func(context: telegram.ext.CallbackContext):
+    context.bot.send_message(chat_id='983782432', text=links_dict[user_dict[users[4]][10]])
+
+job_daily = job.run_daily(func, days=(4,4), time=cl_2)
+
+
 
 updater.start_polling()
 updater.idle()
