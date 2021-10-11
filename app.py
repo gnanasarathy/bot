@@ -46,10 +46,13 @@ for t in range(5):
     s = "Link for the Class\n"
     class_t = [s+link1[0][0], s+link2[0][0]]
     day = (t, t)
-    for x in range(2):
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[0], text=class_t[x])
-        job_daily = job.run_daily(func, days=day, time=cl[x])
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[0], text=class_t[0])
+    job_daily = job.run_daily(func, days=day, time=cl[0])
+
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[0], text=class_t[1])
+    job_daily = job.run_daily(func, days=day, time=cl[1])
 
 
     if f:
@@ -74,10 +77,14 @@ for t in range(5):
     s = "Link for the Class\n"
     class_t = [s+link1[0][0], s+link2[0][0]]
     day = (t, t)
-    for x in range(2):
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[1], text=class_t[x])
-        job_daily = job.run_daily(func, days=day, time=cl[x])
+
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[1], text=class_t[0])
+    job_daily = job.run_daily(func, days=day, time=cl[0])
+
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[1], text=class_t[1])
+    job_daily = job.run_daily(func, days=day, time=cl[1])
 
     if f:
         lab_q = "lab_" + section[1]
@@ -101,9 +108,14 @@ for t in range(5):
     class_t = [s+link1[0][0], s+link2[0][0]]
     day = (t, t)
     for x in range(2):
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[2], text=class_t[x])
-        job_daily = job.run_daily(func, days=day, time=cl[x])
+    
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[2], text=class_t[0])
+    job_daily = job.run_daily(func, days=day, time=cl[0])
+
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[2], text=class_t[1])
+    job_daily = job.run_daily(func, days=day, time=cl[1])
 
     if f:
         lab_q = "lab_" + section[2]
@@ -126,10 +138,14 @@ for t in range(5):
     s = "Link for the Class\n"
     class_t = [s+link1[0][0], s+link2[0][0]]
     day = (t, t)
-    for x in range(2):
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[3], text=class_t[x])
-        job_daily = job.run_daily(func, days=day, time=cl[x])
+    
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[3], text=class_t[0])
+    job_daily = job.run_daily(func, days=day, time=cl[0])
+
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[3], text=class_t[1])
+    job_daily = job.run_daily(func, days=day, time=cl[1])
 
     if f:
         lab_q = "lab_" + section[3]
@@ -151,10 +167,14 @@ for t in range(5):
     s = "Link for the Class\n"
     class_t = [s+link1[0][0], s+link2[0][0]]
     day = (t, t)
-    for x in range(2):
-        def func(context: telegram.ext.CallbackContext):
-            context.bot.send_message(chat_id=users[4], text=class_t[x])
-        job_daily = job.run_daily(func, days=day, time=cl[x])
+    
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[4], text=class_t[0])
+    job_daily = job.run_daily(func, days=day, time=cl[0])
+
+    def func(context: telegram.ext.CallbackContext):
+        context.bot.send_message(chat_id=users[4], text=class_t[1])
+    job_daily = job.run_daily(func, days=day, time=cl[1])
 
     if f:
         lab_q = "lab_" + section[4]
