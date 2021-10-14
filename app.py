@@ -27,5 +27,8 @@ job = viswa.launch(job)
 murali = Scheduler('983782432',['jan', 'ui', 'a', 'moh', 'ac', 'ang', 'jan', 'ac', 'moh', 'ang', 'ui'])
 job = murali.launch(job)
 
+girish = Scheduler('1126599389',['abi', 'nlp', 'a', 'moh', 'pd', 'ang', 'abi', 'pd', 'moh', 'ang', 'nlp'])
+job = girish.launch(job)
+
 updater.start_polling()
 updater.idle()
