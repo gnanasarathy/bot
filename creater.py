@@ -29,15 +29,15 @@ class Scheduler():
         self.user_key = [subject[j] + '_' + staff[j] for j in range(len(subject))]
 
     def launch(self, job):
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[0]).period, days=(0, 0), time=cl_1)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[1]).period, days=(0, 0), time=cl_2)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[2]).period, days=(0, 0), time=cl_3)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[3]).period, days=(1, 1), time=cl_1)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[4]).period, days=(1, 1), time=cl_2)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[5]).period, days=(2, 2), time=cl_1)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[6]).period, days=(2, 2), time=cl_2)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[7]).period, days=(3, 3), time=cl_1)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[8]).period, days=(3, 3), time=cl_2)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[9]).period, days=(4, 4), time=cl_1)
-        job.run_daily(PeriodAllloct(self.user_id, self.user_key[10]).period, days=(4, 4), time=cl_2)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[0]]).period, days=(0, 0), time=cl_1)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[1]]).period, days=(0, 0), time=cl_2)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[2]]).period, days=(0, 0), time=cl_3)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[3]]).period, days=(1, 1), time=cl_1)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[4]]).period, days=(1, 1), time=cl_2)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[5]]).period, days=(2, 2), time=cl_1)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[6]]).period, days=(2, 2), time=cl_2)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[7]]).period, days=(3, 3), time=cl_1)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[8]]).period, days=(3, 3), time=cl_2)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[9]]).period, days=(4, 4), time=cl_1)
+        job.run_daily(PeriodAllloct(self.user_id, links_dict[self.user_key[10]]).period, days=(4, 4), time=cl_2)
         return job
